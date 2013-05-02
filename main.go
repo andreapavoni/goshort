@@ -36,14 +36,14 @@ func renderTemplate(ctx *web.Context, tmpl string, msg Msg) {
 func initRedis() (*RedisModel, error) {
 
   if creds := os.Getenv("REDISTOGO_URL") ; creds != "" {
-    re, err := regexp.Compile(`redis://(\w+:\w+)?@(.*:\d+)/`)
+    re, err := regexp.Compile(`redis://(.*:\d+)/`)
 
     if err != nil {
       return nil, err
     }
 
     c := re.FindStringSubmatch(creds)[1:]
-    return NewRedisModel(c[1], c[0], int64(-1)), nil
+    return NewRedisModel(c[0], "", int64(-1)), nil
   }
 
   return NewRedisModel("localhost:6379", "", int64(-1)), nil

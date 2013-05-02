@@ -4,9 +4,12 @@ import (
   "github.com/hoisie/web"
 	"html/template"
   "fmt"
+  "regexp"
+  "os"
 )
 
-var model = NewRedisModel("localhost:6379", "", int64(-1))
+
+var model, _ = initRedis()
 
 func main() {
   web.Get("/", handleIndex)
@@ -23,6 +26,22 @@ type Msg struct {
 func renderTemplate(ctx *web.Context, tmpl string, msg Msg) {
 	t, _ := template.ParseFiles("views/" + tmpl + ".html")
   t.Execute(ctx.ResponseWriter, msg)
+}
+
+func initRedis() (*RedisModel, error) {
+
+  if creds := os.Getenv("REDISTOGO_URL") ; creds != "" {
+    re, err := regexp.Compile(`redis://(\w+:\w+)?@(.*:\d+)/`)
+
+    if err != nil {
+      return nil, err
+    }
+
+    c := re.FindStringSubmatch(creds)[1:]
+    return NewRedisModel(c[1], c[0], int64(-1)), nil
+  }
+
+  return NewRedisModel("localhost:6379", "", int64(-1)), nil
 }
 
 func handleIndex(ctx *web.Context) {

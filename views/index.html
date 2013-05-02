@@ -6,16 +6,33 @@
     <meta content="GoShort is an URL shortener web service" name='description' />
     <meta content="url, shortener, web, service"  name='keywords' />
     <meta content='Andrea Pavoni' name='author' />
+    <link rel="stylesheet" href="/css/base.css">
+    <link rel="stylesheet" href="/css//skeleton.css">
+    <link rel="stylesheet" href="/css/layout.css">
   </head>
   <body>
-  <h1>GoShort: an URL shortener built to learn some <a href="http://golang.org">Go</a></h1>
 
-    {{ if . }}
-    <p>{{ .Text }}</p>
-    {{ end }}
-    <form action='/' method='POST'>
-      <input type='text', name='url' size='150' id='url'>
-      <input id='submit' type='submit' value='Short it!' />
-    </form>
+
+	<div class="container">
+		<div class="sixteen columns">
+      <h1 class="remove-bottom" style="margin-top: 40px">GoShort: an URL shortener</h1>
+			<h3>built with <a href="http://golang.org">Go</a></h3>
+		</div>
+    <hr>
+      <p class="ten columns">
+      {{ if . }}
+        {{ .Text }}
+      {{ end }}
+      </p>
+		<div class="sixteen columns">
+      <form action='/' method='POST' class="container">
+        <input type='text', name='url' size='150' class="ten columns">
+        <input id='submit' type='submit' value='Short it!' />
+      </form>
+		</div>
+    <hr>
+	</div><!-- container -->
+
+
   </body>
 </html>

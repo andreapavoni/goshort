@@ -16,7 +16,13 @@ func main() {
   web.Post("/", handleCreate)
   web.Get("/(.*)", handleShow)
 
-  web.Run("localhost:9999")
+  listen := ":" + os.Getenv("PORT")
+
+  if listen == "" {
+    listen = ":9999"
+  }
+
+  web.Run(listen)
 }
 
 type Msg struct {

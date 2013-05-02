@@ -8,7 +8,6 @@ import (
   "os"
 )
 
-
 var model, _ = initRedis()
 
 func main() {
@@ -19,7 +18,7 @@ func main() {
   listen := ":" + os.Getenv("PORT")
 
   if listen == "" {
-    listen = ":9999"
+    listen = "0000:9999"
   }
 
   web.Run(listen)

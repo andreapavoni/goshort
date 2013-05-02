@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>GoShort: an URL shortener built to learn some Go</title>
+    <meta content="GoShort is an URL shortener web service" name='description' />
+    <meta content="url, shortener, web, service"  name='keywords' />
+    <meta content='Andrea Pavoni' name='author' />
+  </head>
+  <body>
+  <h1>GoShort: an URL shortener built to learn some <a href="http://golang.org">Go</a></h1>
+
+    {{ if . }}
+    <p>{{ .Text }}</p>
+    {{ end }}
+    <form action='/' method='POST'>
+      <input type='text', name='url' size='150' id='url'>
+      <input id='submit' type='submit' value='Short it!' />
+    </form>
+  </body>
+</html>

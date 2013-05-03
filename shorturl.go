@@ -38,7 +38,7 @@ func (d *RedisModel) Create(url string) (*ShortUrl, error) {
   multi, _ := d.client.MultiClient()
   defer multi.Close()
 
-  id := generateId()
+  id := d.generateId()
 
   _, err := multi.Exec(func() {
     multi.Set(d.redisKey("id", id), url)
@@ -96,9 +96,16 @@ func (d *RedisModel) getKey(key string) (string, error) {
 
 // Misc utils
 
-func generateId() string {
-	/* check existent ids somewhere (eg: Redis) */
-	return base62(randInt())
+func (m *RedisModel) generateId() string {
+  for  {
+    id := base62(randInt())
+
+    if  _, err := m.FindBy("id", id); err != nil {
+      return id
+    }
+  }
+
+  return ""
 }
 
 func randInt() int {

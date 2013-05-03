@@ -1,6 +1,6 @@
 # GoShort
 
-A simple experiment to make a simple web app using [Go](http://golang.org) and [Redis](http://redis.io)
+An experiment to make a simple web app using [Go](http://golang.org) and [Redis](http://redis.io)
 
 ## Installation
 

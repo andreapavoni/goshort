@@ -65,7 +65,7 @@ func handleCreate(ctx *web.Context) {
   short, err := model.Create(url)
 
   if err == nil {
-    msg = Msg{fmt.Sprintf("Saved URL %s with Id %s", short.Url, short.Id)}
+    msg = Msg{fmt.Sprintf("Shortened URL from %s to %s/%s", short.Url, ctx.Request.Host, short.Id)}
   } else {
     msg = Msg{fmt.Sprintf("Error: %s", err)}
   }

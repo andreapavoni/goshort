@@ -4,8 +4,8 @@ import (
   "github.com/hoisie/web"
 	"html/template"
   "fmt"
-  "regexp"
   "os"
+  "net/url"
 )
 
 var model, _ = initRedis()
@@ -17,9 +17,11 @@ func main() {
 
   listen := ":" + os.Getenv("PORT")
 
-  if listen == "" {
-    listen = "0000:9999"
+  if listen == ":" {
+    listen = "0.0.0.0:9999"
   }
+
+  fmt.Println(listen)
 
   web.Run(listen)
 }
@@ -34,16 +36,20 @@ func renderTemplate(ctx *web.Context, tmpl string, msg Msg) {
 }
 
 func initRedis() (*RedisModel, error) {
+  var password string
 
   if creds := os.Getenv("REDISTOGO_URL") ; creds != "" {
-    re, err := regexp.Compile(`redis://(.*:\d+)/`)
+    u, _ := url.Parse(creds)
 
-    if err != nil {
-      return nil, err
+    host := u.Host
+
+    if auth := u.User ; auth != nil {
+      password, _ = u.User.Password()
+    } else {
+      password = ""
     }
 
-    c := re.FindStringSubmatch(creds)[1:]
-    return NewRedisModel(c[0], "", int64(-1)), nil
+    return NewRedisModel(host, password, int64(-1)), nil
   }
 
   return NewRedisModel("localhost:6379", "", int64(-1)), nil

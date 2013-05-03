@@ -30,19 +30,23 @@ func NewRedisModel(host, password string, db int64) *RedisModel {
   return &RedisModel{"goshort", client}
 }
 
-func (d *RedisModel) Create(url string) (*ShortUrl, error) {
+func (m *RedisModel) Create(url string) (*ShortUrl, error) {
   if !validateUrlFormat(url) {
     return nil, errors.New("data: Invalid url format")
   }
 
-  multi, _ := d.client.MultiClient()
+  if res, err := m.FindBy("url", url); err == nil {
+    return res, nil
+  }
+
+  multi, _ := m.client.MultiClient()
   defer multi.Close()
 
-  id := d.generateId()
+  id := m.generateId()
 
   _, err := multi.Exec(func() {
-    multi.Set(d.redisKey("id", id), url)
-    multi.Set(d.redisKey("url", url), id)
+    multi.Set(m.redisKey("id", id), url)
+    multi.Set(m.redisKey("url", url), id)
   })
 
   if err != nil {

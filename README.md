@@ -6,6 +6,7 @@ An experiment to make a simple web app using [Go](http://golang.org) and [Redis]
 
 You'll need a working installation of Redis and Go, then:
 
+* ```go get github.com/hoisie/web```
 * ```go get github.com/apeacox/goshort```
 * ```cd $GOPATH/src/github.com/apeacox/goshort```
 * ```go build```
@@ -27,7 +28,7 @@ There's a working demo on Heroku: http://goshort.herokuapp.com
 
 ### Testing ?
 
-I'm still figuring out how to wrtie them :-P
+I'm still figuring out how to write them :-P
 
 ## License
 

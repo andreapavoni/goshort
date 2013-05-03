@@ -1,1 +1,1 @@
-web: shortgo
+web: goshort

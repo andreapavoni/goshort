@@ -11,7 +11,7 @@ You'll need a working installation of Redis and Go, then:
 * ```cd $GOPATH/src/github.com/apeacox/goshort```
 * ```go build```
 * start a Redis server
-* ```./shortgo```
+* ```./goshort```
 * point your browser to http://0.0.0.0:9999
 
 ## Demo

@@ -4,24 +4,27 @@ import (
   "github.com/hoisie/web"
 	"html/template"
   "fmt"
-  "os"
   "net/url"
+  "flag"
 )
 
-var model, _ = initRedis()
+
+var host *string = flag.String("host", "0.0.0.0", "host and to listen (eg: localhost)")
+var port *string = flag.String("port", "8080", "port to listen")
+var redisconf *string = flag.String("redis", "redis://localhost:6379/", "URL for redis Server (eg: redis://[user:pass@]localhost:6379)")
+
+
+var model *RedisModel
 
 func main() {
   web.Get("/", handleIndex)
   web.Post("/", handleCreate)
   web.Get("/(.*)", handleShow)
 
-  listen := ":" + os.Getenv("PORT")
+  flag.Parse()
 
-  if listen == ":" {
-    listen = "0.0.0.0:9999"
-  }
-
-  fmt.Println(listen)
+  model, _ = initRedis(*redisconf)
+  listen := fmt.Sprintf("%s:%s", *host, *port)
 
   web.Run(listen)
 }
@@ -35,24 +38,20 @@ func renderTemplate(ctx *web.Context, tmpl string, msg Msg) {
   t.Execute(ctx.ResponseWriter, msg)
 }
 
-func initRedis() (*RedisModel, error) {
+func initRedis(config string) (*RedisModel, error) {
   var password string
 
-  if creds := os.Getenv("REDISTOGO_URL") ; creds != "" {
-    u, _ := url.Parse(creds)
+  u, _ := url.Parse(config)
 
-    host := u.Host
+  host := u.Host
 
-    if auth := u.User ; auth != nil {
-      password, _ = u.User.Password()
-    } else {
-      password = ""
-    }
-
-    return NewRedisModel(host, password, int64(-1)), nil
+  if auth := u.User ; auth != nil {
+    password, _ = u.User.Password()
+  } else {
+    password = ""
   }
 
-  return NewRedisModel("localhost:6379", "", int64(-1)), nil
+  return NewRedisModel(host, password, int64(-1)), nil
 }
 
 func handleIndex(ctx *web.Context) {

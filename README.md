@@ -12,7 +12,17 @@ You'll need a working installation of Redis and Go, then:
 * ```go build```
 * start a Redis server
 * ```./goshort```
-* point your browser to http://0.0.0.0:9999
+* point your browser to http://0.0.0.0:8080
+
+### Command line options:
+
+GoShort accepts the following command line options:
+
+* ```-host <hostname>```: hostname to listen (default ```0.0.0.0```)
+* ```-p <portNumber>```: port to listen (default ```8080```)
+* ```-redis <redis://[user:pass@]host:port>``` specify Redis connection URL (default: ```redis://localhost:6379/```)
+
+These are especially useful for deploying in production, check the [Procfile](https://github.com/apeacox/goshort/blob/master/Procfile) to see how it's used on Heroku.
 
 ## Demo
 

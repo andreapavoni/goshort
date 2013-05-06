@@ -22,7 +22,7 @@ type ShortUrl struct {
   Id, Url string
 }
 
-// Initializer
+// Initialize a new RedisModel instance
 func NewRedisModel(host, password string, db int64) *RedisModel {
 	client := redis.NewTCPClient(host, password, db)
 	defer client.Close()
@@ -30,6 +30,7 @@ func NewRedisModel(host, password string, db int64) *RedisModel {
   return &RedisModel{"goshort", client}
 }
 
+// Create a new record on db. If url was already shortened, it uses its id
 func (m *RedisModel) Create(url string) (*ShortUrl, error) {
   if !validateUrlFormat(url) {
     return nil, errors.New("data: Invalid url format")
@@ -56,6 +57,7 @@ func (m *RedisModel) Create(url string) (*ShortUrl, error) {
   return &ShortUrl{id, url}, nil
 }
 
+// Find a record by id or url
 func (d *RedisModel) FindBy(key, value string) (*ShortUrl, error) {
   val, err := d.getKey(d.redisKey(key, value))
 
@@ -74,8 +76,6 @@ func (d *RedisModel) FindBy(key, value string) (*ShortUrl, error) {
 
   return &result, nil
 }
-
-// RedisModel private methods
 
 func (d *RedisModel) redisKey(key, value string) string {
   return fmt.Sprintf("%s.%s|%s", d.redisPrefix, key, value)

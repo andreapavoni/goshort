@@ -6,7 +6,7 @@ An experiment to make a simple web app using [Go](http://golang.org) and [Redis]
 
 You'll need a working installation of Redis and Go, then:
 
-* ```go get github.com/hoisie/web```
+* ```go get github.com/pilu/traffic```
 * ```go get github.com/apeacox/goshort```
 * ```cd $GOPATH/src/github.com/apeacox/goshort```
 * ```go build```

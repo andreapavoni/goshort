@@ -83,15 +83,10 @@ func (d *RedisModel) redisKey(key, value string) string {
 
 func (d *RedisModel) getKey(key string) (string, error) {
   get := d.client.Get(key)
-
-  if get.Err() != nil {
-    return "", get.Err()
-  }
-
   val := get.Val()
 
   if val == "" {
-    err := fmt.Sprintf("data: Key not found %s", key)
+    err := fmt.Sprintf("data: Key not found")
     return "", errors.New(err)
   }
 
